@@ -1,5 +1,6 @@
 from gugu.gugu_main import gugu
 from main_screen.title import mainScreenTitle
+from main_screen.startButton import *
 
 class main(gugu):
     def __init__(self):
@@ -9,6 +10,7 @@ class main(gugu):
 
     def mainScreenStart(self):
         self.mainScreenTitle=mainScreenTitle(self)
+        self.mainScreenStartButton=mainScreen_StartButton(self)
 
 if __name__=='__main__':
     main()

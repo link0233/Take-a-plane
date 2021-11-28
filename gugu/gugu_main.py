@@ -24,6 +24,9 @@ class gugu(Canvas):
     
     def newLabel(self,position,text,bgcolor,color,size,width=0,height=0):
         return Label(self,position,text,bgcolor,color,size,width,height)
+
+    def newButton(self,position,text,bgcolor,textcolor,bgcolor2,textsize):
+        return button(self,position,text,bgcolor,textcolor,bgcolor2,textsize)
         
 
 class Rec:
@@ -62,3 +65,27 @@ class Label:
         if self.kkk!=None:
             self.kkk.update()
         self.kkkd.update()
+
+class button:
+    def __init__(self,guguu,position,text,bgcolor,textcolor,bgcolor2,textsize):
+        self.gugu=guguu
+        self.create(position,text,bgcolor,textcolor,bgcolor2,textsize,1)
+
+    def create(self,position,text,bgcolor,textcolor,bgcolor2,textsize,type):
+        self.textposition=[(position[0]+position[2])//2,(position[1]+position[3])//2]
+        if type==1:
+            self.bg=gugu.newRec(self.gugu,position,bgcolor)
+        else:
+            self.bg=gugu.newRec(self.gugu,position,bgcolor2)
+        self.text=gugu.newText(self.gugu,self.textposition,text,textcolor,textsize)
+        self.item={
+            'position':position,
+            'text':text,
+            'bgcolor':bgcolor,
+            'bgcolor2':bgcolor2,
+            'textcolor':textcolor,
+            'textsize':textsize
+        }
+
+    def update(self,gugu_key):
+        self.mousePosition=gugu_key.mouse    
