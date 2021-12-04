@@ -8,6 +8,22 @@ class gugu(Canvas):
         self.pack()
         self.items={}
         self.items2=[]
+        self.key={
+            'Position':[0,0],
+            'Button1':0
+        }
+        self.keyStart()
+
+    def keyStart(self):
+        self.bind('<Button-1>',self.keyButton1)
+        self.bind('<Motion>',self.motion)
+
+    def motion(self,event):
+        self.key['Position']=[event.x,event.y]
+
+    def keyButton1(self,event):
+        self.key['Button1']=1
+        self.key['Position']=[event.x,event.y]
 
     def update(self):
         self.root.update()
