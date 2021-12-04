@@ -26,6 +26,7 @@ class gugu(Canvas):
         self.key['Position']=[event.x,event.y]
 
     def update(self):
+        self.key['Button1']=0
         self.root.update()
     
     def mainloopp(self):
@@ -41,8 +42,8 @@ class gugu(Canvas):
     def newLabel(self,position,text,bgcolor,color,size,width=0,height=0):
         return Label(self,position,text,bgcolor,color,size,width,height)
 
-    def newButton(self,position,text,bgcolor,textcolor,bgcolor2,textsize):
-        return button(self,position,text,bgcolor,textcolor,bgcolor2,textsize)
+    def newButton(self,position,text,bgcolor,textcolor,bgcolor2,textsize,comment):
+        return button(self,position,text,bgcolor,textcolor,bgcolor2,textsize,comment)
         
 
 class Rec:
@@ -52,9 +53,10 @@ class Rec:
 
     def delete(self):
         self.gugu.delete(self.item)
+        self.item=None
     
     def update(self):
-        print('ok')
+        pass
 
 class Text:
     def __init__(self,gugu,position,_text,color,size):
@@ -63,9 +65,10 @@ class Text:
 
     def delete(self):
         self.gugu.delete(self.item)
+        self.item=None
         
     def update(self):
-        print('ok')
+        pass
 
 class Label:
     def __init__(self,gugu,position,text,bgcolor,color,size,width=0,height=0):
@@ -83,17 +86,8 @@ class Label:
         self.kkkd.update()
 
 class button:
-    def __init__(self,guguu,position,text,bgcolor,textcolor,bgcolor2,textsize):
+    def __init__(self,guguu,position,text,bgcolor,textcolor,bgcolor2,textsize,comment):
         self.gugu=guguu
-        self.create(position,text,bgcolor,textcolor,bgcolor2,textsize,1)
-
-    def create(self,position,text,bgcolor,textcolor,bgcolor2,textsize,type):
-        self.textposition=[(position[0]+position[2])//2,(position[1]+position[3])//2]
-        if type==1:
-            self.bg=gugu.newRec(self.gugu,position,bgcolor)
-        else:
-            self.bg=gugu.newRec(self.gugu,position,bgcolor2)
-        self.text=gugu.newText(self.gugu,self.textposition,text,textcolor,textsize)
         self.item={
             'position':position,
             'text':text,
@@ -102,6 +96,34 @@ class button:
             'textcolor':textcolor,
             'textsize':textsize
         }
+        self.create(1)
+        self.comment=comment
+
+    def create(self,type):
+        self.textposition=[(self.item['position'][0]+self.item['position'][2])//2,(self.item['position'][1]+self.item['position'][3])//2]
+        if type==1:
+            self.bg=gugu.newRec(self.gugu,self.item['position'],self.item['bgcolor'])
+        else:
+            self.bg=gugu.newRec(self.gugu,self.item['position'],self.item['bgcolor2'])
+        self.text=gugu.newText(self.gugu,self.textposition,self.item['text'],self.item['textcolor'],self.item['textsize'])
 
     def update(self,gugu_key):
-        self.mousePosition=gugu_key.mouse    
+        self.mouse_connet(gugu_key)
+    
+    def mouse_connet(self,key):
+        self.mousePosition=key['Position']
+        self.Position=self.item['position']
+        if self.mousePosition[0]>self.Position[0] and self.mousePosition[0]<self.Position[2] and self.mousePosition[1]>self.Position[1] and self.mousePosition[1]<self.Position[3]:
+            self.delete()
+            self.create(2)
+            if key['Button1'] == 1:
+                self.comment()
+        else:
+            self.delete()
+            self.create(1)
+
+    def delete(self):
+        self.bg.delete()
+        self.text.delete()
+        self.bg=None
+        self.text=None
